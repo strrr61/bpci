@@ -3,58 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <title>For You, Lea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat&family=Luckiest+Guy&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffe0e9 0%, #fad0c4 100%);
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       perspective: 1000px;
     }
 
     .scene {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1500px;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .bear {
+      position: absolute;
+      bottom: 20px;
+      left: -200px;
+      width: 150px;
+      animation: bearWalk 4s ease-out forwards;
+      z-index: 3;
+    }
+
+    .flower {
+      position: absolute;
+      bottom: 100px;
+      left: 30px;
+      width: 40px;
+      transform: rotate(-15deg);
+      animation: flowerFloat 4s ease-out forwards;
+    }
+
+    @keyframes bearWalk {
+      0% { left: -200px; }
+      100% { left: 50%; transform: translateX(-50%); }
+    }
+
+    @keyframes flowerFloat {
+      0% { bottom: 100px; opacity: 0; }
+      100% { bottom: 120px; opacity: 1; }
     }
 
     .card {
-      width: 350px;
+      position: relative;
       background: white;
-      border-radius: 20px;
-      padding: 30px;
+      color: #ff4b6e;
+      width: 360px;
+      padding: 35px 25px;
+      border-radius: 25px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), inset 0 0 25px rgba(255, 192, 203, 0.25);
       text-align: center;
       transform-style: preserve-3d;
       transition: transform 0.2s ease;
-      box-shadow:
-        0 20px 40px rgba(0,0,0,0.2),
-        inset 0 0 30px rgba(255, 192, 203, 0.3);
+      opacity: 0;
+      animation: showCard 2s ease-out 4s forwards;
       z-index: 2;
     }
 
-    .card h1, .card h2, .card p {
-      transform: translateZ(20px);
+    @keyframes showCard {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
 
-    .card img {
-      width: 120px;
+    .card h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      color: #e04a68;
+    }
+
+    .card h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6em;
+      color: #ff3366;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 1em;
+      color: #444;
       margin-bottom: 20px;
-      transform: translateZ(30px);
-      animation: float 3s ease-in-out infinite;
+      line-height: 1.5;
     }
 
     .card button {
       background: #ff6f91;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 24px;
       font-size: 1em;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       transform: translateZ(15px);
       box-shadow: 0 4px 12px rgba(255, 111, 145, 0.5);
@@ -63,15 +110,6 @@
 
     .card button:hover {
       background: #ff4b6e;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateZ(30px) translateY(0);
-      }
-      50% {
-        transform: translateZ(30px) translateY(-10px);
-      }
     }
 
     .hearts {
@@ -92,49 +130,124 @@
     }
 
     @keyframes fall {
-      0% {
-        transform: translateY(-10%) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .music-control {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #ff3366;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Popup styling */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.95);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #popup div {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 2em;
+      color: #ff4b6e;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      text-align: center;
+      padding: 30px;
+    }
+
+    #popup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background: #ff6f91;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    #popup button:hover {
+      background: #ff4b6e;
     }
   </style>
 </head>
 <body>
+  <div class="scene">
+    <!-- Musik -->
+    <audio id="bgm" autoplay loop>
+      <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+    <div class="music-control" onclick="toggleMusic()">Pause Music</div>
 
-<div class="hearts">
-  <div class="heart" style="left: 5%; animation-delay: 0s;">❤️</div>
-  <div class="heart" style="left: 25%; animation-delay: 1s;">❤️</div>
-  <div class="heart" style="left: 45%; animation-delay: 2s;">❤️</div>
-  <div class="heart" style="left: 65%; animation-delay: 3s;">❤️</div>
-  <div class="heart" style="left: 85%; animation-delay: 4s;">❤️</div>
-</div>
+    <!-- Hati jatuh -->
+    <div class="hearts">
+      <div class="heart" style="left: 15%; animation-delay: 0s;">❤️</div>
+      <div class="heart" style="left: 35%; animation-delay: 1s;">❤️</div>
+      <div class="heart" style="left: 55%; animation-delay: 2s;">❤️</div>
+      <div class="heart" style="left: 75%; animation-delay: 3s;">❤️</div>
+      <div class="heart" style="left: 85%; animation-delay: 4s;">❤️</div>
+    </div>
 
-<div class="scene">
-  <div class="card" id="card">
-    <img src="https://i.ibb.co/2kMWhPg/teddy-bear.png" alt="Boneka 3D">
-    <h2>For You, Lea</h2>
-    <h1>Dari Seseorang yang Selalu Sayang</h1>
-    <p>Karena kamu selalu spesial, tak peduli waktu dan jarak.</p>
-    <button onclick="alert('Aku sayang kamu, Lea. Dengan sepenuh hati.')">Lihat Pesan Rahasia</button>
+    <!-- Boneka & bunga -->
+    <img src="https://i.ibb.co/2kMWhPg/teddy-bear.png" class="bear" alt="Boneka">
+    <img src="https://i.ibb.co/QbbXZXm/rose.png" class="flower" alt="Bunga">
+
+    <!-- Kartu -->
+    <div class="card">
+      <h2>For You, Lea</h2>
+      <h1>Dari Seseorang yang Selalu Sayang</h1>
+      <p>Karena setiap hari bersamamu terasa seperti hadiah terindah.<br>
+      Semoga senyum dan cintamu terus bersinar seperti hari ini.</p>
+      <button onclick="document.getElementById('popup').style.display='flex'">Lihat Pesan Rahasia</button>
+    </div>
+
+    <!-- Popup Pesan Rahasia -->
+    <div id="popup">
+      <div>
+        Aku sayang kamu, Lea.<br>Dari hati yang terdalam.
+        <br><br>
+        <button onclick="document.getElementById('popup').style.display='none'">Tutup</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-  const card = document.getElementById('card');
-  document.querySelector('.scene').addEventListener('mousemove', (e) => {
-    const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-  });
+  <script>
+    const music = document.getElementById("bgm");
+    const control = document.querySelector(".music-control");
 
-  document.querySelector('.scene').addEventListener('mouseleave', () => {
-    card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-  });
-</script>
-
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        control.innerText = "Pause Music";
+      } else {
+        music.pause();
+        control.innerText = "Play Music";
+      }
+    }
+  </script>
 </body>
 </html>
