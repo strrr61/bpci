@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>For You, Lea</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      font-family: 'Segoe UI', sans-serif;
+      perspective: 1000px;
+    }
+
+    .scene {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1500px;
+    }
+
+    .card {
+      width: 350px;
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease;
+      box-shadow:
+        0 20px 40px rgba(0,0,0,0.2),
+        inset 0 0 30px rgba(255, 192, 203, 0.3);
+      z-index: 2;
+    }
+
+    .card h1, .card h2, .card p {
+      transform: translateZ(20px);
+    }
+
+    .card img {
+      width: 120px;
+      margin-bottom: 20px;
+      transform: translateZ(30px);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .card button {
+      background: #ff6f91;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 10px;
+      cursor: pointer;
+      transform: translateZ(15px);
+      box-shadow: 0 4px 12px rgba(255, 111, 145, 0.5);
+      transition: background 0.3s ease;
+    }
+
+    .card button:hover {
+      background: #ff4b6e;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateZ(30px) translateY(0);
+      }
+      50% {
+        transform: translateZ(30px) translateY(-10px);
+      }
+    }
+
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      color: #ff4b6e;
+      font-size: 24px;
+      animation: fall 6s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10%) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hearts">
+  <div class="heart" style="left: 5%; animation-delay: 0s;">❤️</div>
+  <div class="heart" style="left: 25%; animation-delay: 1s;">❤️</div>
+  <div class="heart" style="left: 45%; animation-delay: 2s;">❤️</div>
+  <div class="heart" style="left: 65%; animation-delay: 3s;">❤️</div>
+  <div class="heart" style="left: 85%; animation-delay: 4s;">❤️</div>
+</div>
+
+<div class="scene">
+  <div class="card" id="card">
+    <img src="https://i.ibb.co/2kMWhPg/teddy-bear.png" alt="Boneka 3D">
+    <h2>For You, Lea</h2>
+    <h1>Dari Seseorang yang Selalu Sayang</h1>
+    <p>Karena kamu selalu spesial, tak peduli waktu dan jarak.</p>
+    <button onclick="alert('Aku sayang kamu, Lea. Dengan sepenuh hati.')">Lihat Pesan Rahasia</button>
+  </div>
+</div>
+
+<script>
+  const card = document.getElementById('card');
+  document.querySelector('.scene').addEventListener('mousemove', (e) => {
+    const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+  });
+
+  document.querySelector('.scene').addEventListener('mouseleave', () => {
+    card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+  });
+</script>
+
+</body>
+</html>
